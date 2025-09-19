@@ -1,0 +1,67 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Bottled Waters Store</title>
+  <style>
+    body { font-family: Arial, sans-serif; text-align: center; margin: 40px; }
+    img { max-width: 300px; margin: 20px 0; }
+    .price { font-size: 20px; margin: 10px 0; }
+    .strike { text-decoration: line-through; color: gray; }
+    .free-ship { color: green; font-weight: bold; }
+    label { font-weight: bold; }
+    footer { margin-top: 50px; font-size: 14px; color: #333; }
+    footer a { color: blue; text-decoration: none; }
+    footer a:hover { text-decoration: underline; }
+  </style>
+</head>
+<body>
+
+  <h1>Bottled Waters</h1>
+
+  <h2>Aquafina Bottled Water</h2>
+  <img src="aquafina.jpg" alt="Aquafina Bottled Water">
+
+  <p class="strike">3 Cases × 24-Pack Bottles</p>
+  <p><strong>Now upgraded: 3 Cases × 32-Pack Bottles</strong></p>
+
+  <p class="price">$65.99 per set</p>
+  <p class="free-ship">✅ Free Shipping</p>
+
+  <label for="quantity">Quantity:</label>
+  <input type="number" id="quantity" name="quantity" value="1" min="1" style="width:60px;">
+  
+  <!-- PayPal Button -->
+  <div id="paypal-button-container" style="margin-top:20px;"></div>
+
+  <script src="https://www.paypal.com/sdk/js?client-id=Aa5z_5yiMu__mYt_5w0MStkQDSLwfXfw-G1VHlxkOynfyw3q4BHlVQKrLES7RzQtHgULCVnGwRgiNzgM&currency=USD"></script>
+  <script>
+    paypal.Buttons({
+      createOrder: function(data, actions) {
+        let qty = document.getElementById("quantity").value;
+        let price = 65.99 * qty;
+        return actions.order.create({
+          purchase_units: [{
+            amount: {
+              value: price.toFixed(2)
+            },
+            description: qty + " × Aquafina 3 Case Pack (32 bottles per case) - Free Shipping"
+          }]
+        });
+      },
+      onApprove: function(data, actions) {
+        return actions.order.capture().then(function(details) {
+          alert("Thank you, " + details.payer.name.given_name + "! Your order has been placed.");
+        });
+      }
+    }).render('#paypal-button-container');
+  </script>
+
+  <footer>
+    🚚 All orders ship FREE anywhere in the USA! <br><br>
+    📧 <a href="mailto:goodsbetterbest@gmail.com">Contact Us</a>
+  </footer>
+
+</body>
+</html>
