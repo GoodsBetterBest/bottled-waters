@@ -86,7 +86,7 @@
 <!-- SELLING POINTS -->
 <div class="selling-points">
   <div>🚚 Free Delivery</div>
-  <div>💲 No Tips or Handling Fees</div>
+  <div>💲 No Driver Tips or Handling Fees</div>
   <div>⚡ Superfast 1-Biz-Day Delivery</div>
 </div>
 
@@ -150,7 +150,8 @@
     div.innerHTML = `
       <img src="${product.image}" alt="${product.title}">
       <h2>${product.title}</h2>
-      <p><del>${product.listed}</del> <br> ${product.upgrade}</p>
+      <p>Price: $${product.price.toFixed(2)}</p>
+      <p><del>${product.listed}</del> <br> <strong>${product.upgrade}</strong></p>
       <ul>
         ${product.description.map(d => `<li>${d}</li>`).join("")}
       </ul>
@@ -167,15 +168,12 @@
         const total = (product.price * quantity).toFixed(2);
         return actions.order.create({
           purchase_units: [{
-            amount: {
-              value: total
-            }
+            amount: { value: total }
           }]
         });
       },
       onApprove: function(data, actions) {
         return actions.order.capture().then(function(details) {
-          // In-line thank-you message under product card
           const thankyouDiv = document.createElement('div');
           thankyouDiv.style.color = 'green';
           thankyouDiv.style.fontWeight = 'bold';
